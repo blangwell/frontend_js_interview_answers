@@ -38,3 +38,32 @@ The building blocks of HTML5 include:
 - **localStorage** is a JavaScript object stores data up to 10MB with no expiration date. It will not be deleted when the browser is closed.
 - **sessionStorage** stores data for _one session only_ with all data being lost when the browser tab/window is closed. 
 - **cookies** are small pieces of data sent by the server to the user's browser. The browser stores the cookie and sends it back to the server in later requests. Cookies are used to differentiate requests sent from different browsers. (Think keeping a user logged in). Since cookies are sent with every request, they can decrease performance, hence the implementation of local and session storage.
+
+## Describe the difference between <script>, <script async> and <script defer>.
+- `<script>` executes as soon as it is reached in the HTML document. The browser waits for the script downloads and executes, and then processes the rest of the web page.
+- `<script async>` downloads a file aynchronously and executes it once it is downloaded.
+- `<script defer>` downloads a file asynchronously and exectutes it when document parsing is completed. Good to use when execution of one script relies on another script.
+
+## Why is it generally a good idea to position CSS <link>s between <head></head> and JS <script>s just before </body>? Do you know any exceptions?
+- For the CSS piece - Since HTML is loaded line by line, we execute the CSS prior to loading the body so that the styles will be reflected immediately upon the body's execution. You could put CSS into the body if you want the page to rerender with new styles after the body has rendered.  
+- For JS - HTML is loaded line by line, so when a `<script>` tag is reached it will be loaded and executed immediately. Since JS often manipulates the DOM, it makes sense to run a script once the DOM is loaded and ready to go. Script tags can also be placed at the end of the `<head>` (see Bootstrap example below.) This ensures that the content of the script will be loaded prior to the HTML. Since DOM event listeners are often wrapped in a `DOMContentLoaded` event and we have access to `<script async>` and `<script defer>`, you could theoretically place a script tag further up in the html body. 
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+```
+
+## What is progressive rendering?
+Progressive rendering was common in the before-broadband times, and these days it is used to account for mobile data connections. We send data in chunks so that the user can first see a basic view of the page with placeholders where needed. 
